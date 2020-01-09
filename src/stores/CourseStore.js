@@ -27,6 +27,10 @@ class CourseStore extends EventEmitter {
   }
 }
 
+function updateCourse(course) {
+  _courses[_courses.findIndex(c => c.id === course.id)] = course;
+}
+
 const store = new CourseStore();
 
 Dispatcher.register(action => {
@@ -37,6 +41,10 @@ Dispatcher.register(action => {
       break;
     case actionTypes.LOAD_COURSES:
       _courses = action.courses;
+      store.emitChange();
+      break;
+    case actionTypes.UPDATE_COURSE:
+      updateCourse(action.course);
       store.emitChange();
       break;
     default:
